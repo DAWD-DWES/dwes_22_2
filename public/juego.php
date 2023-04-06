@@ -65,13 +65,6 @@ if (isset($_SESSION['usuario'])) {
         if (!$error) {
             $partida->compruebaLetra(strtoupper($letra));
         }
-        if ($partida->esFin()) {
-            if (isset($_SESSION['partidas'])) {
-                $_SESSION['partidas'][] = $partida;
-            } else {
-                $_SESSION['partidas'] = [$partida];
-            }
-        }
 // Sigo jugando
         echo $blade->run("juego", compact('usuario', 'partida', 'error'));
         die;
@@ -84,23 +77,6 @@ if (isset($_SESSION['usuario'])) {
 // Invoco la vista del juego para empezar a jugar
         echo $blade->run("juego", compact('usuario', 'partida'));
         die;
-    } elseif (isset($_REQUEST['botonresumenpartidas'])) {// Se arranca una nueva partida
-        $usuario = $_SESSION['usuario'];
-        $partidas = $_SESSION['partidas'] ?? [];
-        $partidasGanadas = [];
-        $partidasPerdidas = [];
-        foreach ($partidas as $partida) {
-            if ($partida->esPalabraDescubierta()) {
-                $partidasGanadas[$partida->getPalabraSecreta()] = $partida->getNumErrores();
-            } else {
-                $partidasPerdidas[] = $partida->getPalabraSecreta();
-            }
-        }
-        ksort($partidasGanadas);
-        sort($partidasPerdidas);
-
-        echo $blade->run("resumenpartidas", compact('partidasGanadas', 'partidasPerdidas'));
-        die;
     } else { // En cualquier otro caso
         $usuario = $_SESSION['usuario'];
         $partida = $_SESSION['partida'];
@@ -112,4 +88,3 @@ if (isset($_SESSION['usuario'])) {
     echo $blade->run("formlogin");
     die;
 }
-    

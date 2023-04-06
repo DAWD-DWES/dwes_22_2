@@ -1,5 +1,4 @@
 <?php
-
 namespace App;
 
 class AlmacenPalabrasFichero implements AlmacenPalabrasInterface {
@@ -19,5 +18,4 @@ class AlmacenPalabrasFichero implements AlmacenPalabrasInterface {
     public function obtenerPalabraAleatoria(): string {
         return $this->listaPalabras[array_rand($this->listaPalabras)];
     }
-
 }
