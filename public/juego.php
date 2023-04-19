@@ -20,11 +20,9 @@ require "../vendor/autoload.php";
 
 use eftec\bladeone\BladeOne;
 use Dotenv\Dotenv;
-use App\{
-    BD,
-    Hangman,
-    AlmacenPalabrasFichero
-};
+
+use App\Modelo\Hangman;
+use App\Almacen\AlmacenPalabrasFichero;
 
 session_start();
 
@@ -44,19 +42,12 @@ $views = __DIR__ . '/../vistas';
 $cache = __DIR__ . '/../cache';
 $blade = new BladeOne($views, $cache, BladeOne::MODE_DEBUG);
 
-// Establece conexión a la base de datos PDO
-try {
-    $bd = BD::getConexion();
-} catch (PDOException $error) {
-    echo $blade->run("cnxbderror", compact('error'));
-    die;
-}
 // Si el usuario ya está validado
 if (isset($_SESSION['usuario'])) {
 // Si se pide jugar con una letra
     if (isset($_POST['botonenviarjugada'])) {
 // Leo la letra
-        $letra = filter_var(trim(filter_input(INPUT_POST, 'letra', FILTER_SANITIZE_STRING)), FILTER_VALIDATE_REGEXP, ['options' => ['regexp' => "/^[A-Za-z]$/"]]);
+        $letra = filter_var(trim(filter_input(INPUT_POST, 'letra', FILTER_UNSAFE_RAW)), FILTER_VALIDATE_REGEXP, ['options' => ['regexp' => "/^[A-Za-z]$/"]]);
         $usuario = $_SESSION['usuario'];
         $partida = $_SESSION['partida'];
 // Si la letra no es válida (carácter no válido o ya introducida)

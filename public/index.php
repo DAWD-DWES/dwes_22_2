@@ -35,10 +35,9 @@ require "../vendor/autoload.php";
 
 use eftec\bladeone\BladeOne;
 use Dotenv\Dotenv;
-use App\{
-    BD,
-    Usuario
-};
+use App\BD\BD;
+use App\Modelo\Usuario;
+use App\DAO\UsuarioDao;
 
 // Funciones de validación de datos del formulario de registro
 // Validación del nombre con expresión regular
@@ -74,12 +73,10 @@ $cache = __DIR__ . '/../cache';
 $blade = new BladeOne($views, $cache, BladeOne::MODE_DEBUG);
 
 // Establece conexión a la base de datos PDO
-try {
-    $bd = BD::getConexion();
-} catch (PDOException $error) {
-    echo $blade->run("cnxbderror", compact('error'));
-    die;
-}
+
+$bd = BD::getConexion();
+
+$usuarioDao = new UsuarioDao($bd);
 // Si el usuario ya está validado
 if (isset($_SESSION['usuario'])) {
 // Si se solicita cerrar la sesión
