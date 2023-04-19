@@ -26,10 +26,9 @@ require "../vendor/autoload.php";
 
 use eftec\bladeone\BladeOne;
 use Dotenv\Dotenv;
-use App\{
-    BD,
-    Usuario
-};
+use App\BD\BD;
+use App\Modelo\Usuario;
+use App\DAO\UsuarioDao;
 
 session_start();
 
@@ -43,12 +42,10 @@ $cache = __DIR__ . '/../cache';
 $blade = new BladeOne($views, $cache, BladeOne::MODE_DEBUG);
 
 // Establece conexión a la base de datos PDO
-try {
-    $bd = BD::getConexion();
-} catch (PDOException $error) {
-    echo $blade->run("cnxbderror", compact('error'));
-    die;
-}
+
+$bd = BD::getConexion();
+
+$usuarioDao = new UsuarioDAO($bd);
 // Si el usuario ya está validado
 if (isset($_SESSION['usuario'])) {
     // Si se solicita cerrar la sesión
@@ -77,9 +74,9 @@ if (isset($_SESSION['usuario'])) {
         // Si se está enviando el formulario de login con los datos
     } elseif (isset($_REQUEST['botonproclogin'])) {
         // Lee los valores del formulario
-        $nombre = trim(filter_input(INPUT_POST, 'nombre', FILTER_SANITIZE_STRING));
-        $clave = trim(filter_input(INPUT_POST, 'clave', FILTER_SANITIZE_STRING));
-        $usuario = Usuario::recuperaUsuarioPorCredencial($bd, $nombre, $clave);
+        $nombre = trim(filter_input(INPUT_POST, 'nombre', FILTER_UNSAFE_RAW));
+        $clave = trim(filter_input(INPUT_POST, 'clave', FILTER_UNSAFE_RAW));
+        $usuario = $usuarioDao->recuperaPorCredencial($nombre, $clave);
         // Si los credenciales son correctos
         if ($usuario) {
             $_SESSION['usuario'] = $usuario;
