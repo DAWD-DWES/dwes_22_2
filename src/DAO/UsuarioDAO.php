@@ -2,33 +2,58 @@
 
 namespace App\DAO;
 
-use PDO;
+use \PDO;
 use App\Modelo\Usuario;
 
 class UsuarioDAO {
 
-    private $bd;
+    /**
+     * @var $bd Conexión a la Base de Datos
+     */
+    private PDO $bd;
 
-    function __construct($bd) {
+    /**
+     * Constructor de la clase UsuarioDAO
+     * 
+     * @param PDO $bd Conexión a la base de datos
+     * 
+     * @returns UsuarioDAO
+     */
+    public function __construct(PDO $bd) {
         $this->bd = $bd;
     }
 
-    function crea($usuario) {
+    public function crea(Usuario $usuario) {
         
     }
 
-    function modifica($usuario) {
+    /**
+     * Modifica un objeto usuario en la tabla usuarios
+     * 
+     * @param Usuario $usuario Usuario a persistir 
+     * 
+     * @returns bool Resultado de la operación de actualización
+     */
+    public function modifica($usuario) {
         $sql = "update usuarios set nombre = :nombre, clave = :clave, email = :email where id = :id";
         $sth = $this->bd->prepare($sql);
-        $result = $sth->execute([":nombre" => $usuario->nombre, ":clave" => $usuario->clave, ":email" => $usuario->email, ":id" => $usuario->id]);
+        $result = $sth->execute([":nombre" => $usuario->getNombre(), ":clave" => $usuario->getClave(), ":email" => $usuario->getEmail(), ":id" => $usuario->getId()]);
         return ($result);
     }
 
-    function elimina($nombre) {
+    public function elimina(int $id) {
         
     }
 
-    function recuperaPorCredencial($nombre, $pwd) {
+    /**
+     * Recupera un objeto usuario dado su nombre de usuario y clave
+     * 
+     * @param string $nombre Nombre de usuario
+     * @param string $clave Clave del usuario
+     * 
+     * @returns Usuario que corresponde a ese nombre y clave o null en caso contrario
+     */
+    public function recuperaPorCredencial(string $nombre, string $pwd): ?Usuario {
         $this->bd->setAttribute(PDO::ATTR_CASE, PDO::CASE_NATURAL);
         $sql = 'select * from usuarios where nombre=:nombre and clave=:pwd';
         $sth = $this->bd->prepare($sql);
