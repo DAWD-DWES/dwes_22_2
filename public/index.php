@@ -1,5 +1,4 @@
 <?php
-
 /**
  *  --- Lógica del script --- 
  * 
@@ -8,18 +7,14 @@
  *   Si se solicita cerrar la sesión
  *     Destruyo la sesión
  *     Invoco la vista del formulario de login
- *   Sino (cualquier otro caso)
- *     Redirijo al cliente al script juego.php
- * Sino
- *  Si se está solicitando el formulario de login
- *     Invoco la vista del formulario de login
- *  Sino Si se pide procesar los datos del formulario
- *            Lee los valores del formulario
- *            Si los credenciales son correctos
- *               Redirijo al cliente al script de juego con una nueva partida
- *            Sino
- *               Invoco la vista del formulario de login con el flag de error
- *  Sino (En cualquier otro caso)
+ *    Sino redirección a juego para jugar una partida
+ *  Sino 
+ *   Si se pide procesar los datos del formulario
+ *       Lee los valores del formulario
+ *       Si los credenciales son correctos
+ *       Redirijo al cliente al script de juego con una nueva partida
+ *        Sino Invoco la vista del formulario de login con el flag de error
+ *   Sino (En cualquier otro caso)
  *      Invoco la vista del formulario de login
  */
 require "../vendor/autoload.php";
@@ -33,19 +28,30 @@ use App\DAO\UsuarioDao;
 session_start();
 
 // Inicializa el acceso a las variables de entorno
+
 $dotenv = Dotenv::createImmutable(__DIR__ . "/../");
 $dotenv->load();
 
 // Inicializa el acceso a las variables de entorno
+
 $views = __DIR__ . '/../vistas';
 $cache = __DIR__ . '/../cache';
 $blade = new BladeOne($views, $cache, BladeOne::MODE_DEBUG);
 
 // Establece conexión a la base de datos PDO
+try {
+    $host = $_ENV['DB_HOST'];
+    $port = $_ENV['DB_PORT'];
+    $database = $_ENV['DB_DATABASE'];
+    $usuario = $_ENV['DB_USUARIO'];
+    $password = $_ENV['DB_PASSWORD'];
+    $bd = BD::getConexion($host, $port, $database, $usuario, $password);
+} catch (PDOException $error) {
+    echo $blade->run("cnxbderror", compact('error'));
+    die;
+}
 
-$bd = BD::getConexion();
-
-$usuarioDao = new UsuarioDAO($bd);
+$usuarioDao = new UsuarioDao($bd);
 // Si el usuario ya está validado
 if (isset($_SESSION['usuario'])) {
     // Si se solicita cerrar la sesión
@@ -57,8 +63,7 @@ if (isset($_SESSION['usuario'])) {
         // Invoco la vista del formulario de login
         echo $blade->run("formlogin");
         die;
-    } else { // Si se solicita una nueva partida
-        $usuario = $_SESSION['usuario'];
+    } else {
         // Redirijo al cliente al script de gestión del juego
         header("Location:juego.php?botonnuevapartida");
         die;
@@ -66,13 +71,7 @@ if (isset($_SESSION['usuario'])) {
 
     // Sino 
 } else {
-    // Si se está solicitando el formulario de login
-    if ((empty($_REQUEST)) || isset($_REQUEST['botonlogin'])) {
-        // Invoco la vista del formulario de login
-        echo $blade->run("formlogin");
-        die;
-        // Si se está enviando el formulario de login con los datos
-    } elseif (isset($_REQUEST['botonproclogin'])) {
+    if (isset($_REQUEST['botonproclogin'])) {
         // Lee los valores del formulario
         $nombre = trim(filter_input(INPUT_POST, 'nombre', FILTER_UNSAFE_RAW));
         $clave = trim(filter_input(INPUT_POST, 'clave', FILTER_UNSAFE_RAW));
@@ -96,4 +95,4 @@ if (isset($_SESSION['usuario'])) {
         echo $blade->run("formlogin");
         die;
     }
-} 
+}
