@@ -30,15 +30,6 @@ use App\Almacen\AlmacenPalabrasFichero;
 session_start();
 
 define('MAX_NUM_ERRORES', 5);
-define('IMGS_HANGMAN', [
-    'assets/img/Hangman-0.png',
-    'assets/img/Hangman-1.png',
-    'assets/img/Hangman-2.png',
-    'assets/img/Hangman-3.png',
-    'assets/img/Hangman-4-png',
-    'assets/img/Hangman-5.png']);
-
-$imgsHangman = constant('IMGS_HANGMAN');
 
 $dotenv = Dotenv::createImmutable(__DIR__ . "/../");
 $dotenv->load();
@@ -61,6 +52,7 @@ if (isset($_SESSION['usuario'])) {
         if (!$error) {
             $partida->compruebaLetra(strtoupper($letra));
         }
+        // Si es el fin de la partida añado dicha partida a la lista de la sesión
         if ($partida->esFin()) {
             if (isset($_SESSION['partidas'])) {
                 $_SESSION['partidas'][] = $partida;
@@ -69,16 +61,17 @@ if (isset($_SESSION['usuario'])) {
             }
         }
         // Sigo jugando
-        echo $blade->run("juego", compact('usuario', 'partida', 'error', 'imgsHangman'));
+        echo $blade->run("juego", compact('usuario', 'partida', 'error'));
         die;
 // Sino si se solicita una nueva partida
     } elseif (isset($_REQUEST['botonnuevapartida'])) { // Se arranca una nueva partida
         $usuario = $_SESSION['usuario'];
-        $almacenPalabras = new AlmacenPalabrasFichero();
+        $rutaFichero = $_ENV['RUTA_ALMACEN_PALABRAS'];
+        $almacenPalabras = new AlmacenPalabrasFichero($rutaFichero);
         $partida = new Hangman($almacenPalabras, MAX_NUM_ERRORES);
         $_SESSION['partida'] = $partida;
 // Invoco la vista del juego para empezar a jugar
-        echo $blade->run("juego", compact('usuario', 'partida', 'imgsHangman'));
+        echo $blade->run("juego", compact('usuario', 'partida'));
         die;
     } elseif (isset($_REQUEST['botonresumenpartidas'])) {// Se arranca una nueva partida
         $usuario = $_SESSION['usuario'];
@@ -100,7 +93,7 @@ if (isset($_SESSION['usuario'])) {
     } else { //En cualquier otro caso
         $usuario = $_SESSION['usuario'];
         $partida = $_SESSION['partida'];
-        echo $blade->run("juego", compact('usuario', 'partida', 'imgsHangman'));
+        echo $blade->run("juego", compact('usuario', 'partida'));
         die;
     }
 // En otro caso se muestra el formulario de login

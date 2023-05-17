@@ -4,13 +4,9 @@
 @section('title', 'Formulario registro')
 {{-- Sección aporta el título de la página --}}
 @section('navbar')
-<div class="container justify-content-around">
-    <ul class="navbar-nav">
-        <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="juego.php">Volver</a>
-        </li>
-    </ul>
-</div>
+<li class="nav-item">
+    <a class="nav-link" aria-current="page" href="juego.php">Volver</a>
+</li>
 @endsection
 {{-- Sección muestra el formulario de perfil del usuario --}}
 @section('content')
@@ -23,7 +19,7 @@
             <div class="panel-heading">Modificación Perfil</div>
             <div class="panel-body mt-3">
                 <form class="form-horizontal" method="POST" action="index.php" id='formregistro' novalidate>
-                    <div class="form-group row">                            
+                    <div class="mb-3 row">                            
                         <label for="inputNombre" class="col-sm-2 col-form-label">Nombre</label>
                         <div class="col-sm-10">
                             <input id="inputNombre" type="text" value="{{ $nombre ?? "" }}"
@@ -34,7 +30,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <div class="mb-3 row">
                         <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
                         <div class="col-sm-10">
                             <input type="password" value="{{ $clave ?? "" }}"
@@ -44,7 +40,7 @@
                             </div>
                         </div>        
                     </div>
-                    <div class="form-group row">
+                    <div class="mb-3 row">
                         <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
                         <div class="col-sm-10">
                             <input type="email" value="{{ $email ??  "" }}"
@@ -54,7 +50,7 @@
                             </div>
                         </div>        
                     </div>
-                    <div class="form-group">
+                    <div class="mb-3">
                         <div class="col-md-8 col-md-offset-4">
                             <input type="submit" class="btn btn-primary" name="botonprocperfil" value="Modifica Perfil">
                         </div>
