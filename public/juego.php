@@ -29,14 +29,16 @@ use App\Almacen\AlmacenPalabrasFichero;
 
 session_start();
 
-define("MAX_NUM_ERRORES", 5);
-define("IMGS_HANGMAN", [
+define('MAX_NUM_ERRORES', 5);
+define('IMGS_HANGMAN', [
+    'assets/img/Hangman-0.png',
     'assets/img/Hangman-1.png',
     'assets/img/Hangman-2.png',
     'assets/img/Hangman-3.png',
-    'assets/img/Hangman-4.png',
-    'assets/img/Hangman-5.png',
-    'assets/img/Hangman-6.png']);
+    'assets/img/Hangman-4-png',
+    'assets/img/Hangman-5.png']);
+
+$imgsHangman = constant('IMGS_HANGMAN');
 
 $dotenv = Dotenv::createImmutable(__DIR__ . "/../");
 $dotenv->load();
@@ -67,7 +69,7 @@ if (isset($_SESSION['usuario'])) {
             }
         }
         // Sigo jugando
-        echo $blade->run("juego", compact('usuario', 'partida', 'error'));
+        echo $blade->run("juego", compact('usuario', 'partida', 'error', 'imgsHangman'));
         die;
 // Sino si se solicita una nueva partida
     } elseif (isset($_REQUEST['botonnuevapartida'])) { // Se arranca una nueva partida
@@ -76,7 +78,7 @@ if (isset($_SESSION['usuario'])) {
         $partida = new Hangman($almacenPalabras, MAX_NUM_ERRORES);
         $_SESSION['partida'] = $partida;
 // Invoco la vista del juego para empezar a jugar
-        echo $blade->run("juego", compact('usuario', 'partida'));
+        echo $blade->run("juego", compact('usuario', 'partida', 'imgsHangman'));
         die;
     } elseif (isset($_REQUEST['botonresumenpartidas'])) {// Se arranca una nueva partida
         $usuario = $_SESSION['usuario'];
@@ -98,7 +100,7 @@ if (isset($_SESSION['usuario'])) {
     } else { //En cualquier otro caso
         $usuario = $_SESSION['usuario'];
         $partida = $_SESSION['partida'];
-        echo $blade->run("juego", compact('usuario', 'partida'));
+        echo $blade->run("juego", compact('usuario', 'partida', 'imgsHangman'));
         die;
     }
 // En otro caso se muestra el formulario de login
