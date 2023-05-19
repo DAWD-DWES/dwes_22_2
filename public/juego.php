@@ -51,13 +51,9 @@ if (isset($_SESSION['usuario'])) {
         // Si no hay error compruebo la letra
         if (!$error) {
             $partida->compruebaLetra(strtoupper($letra));
-        }
-        // Si es el fin de la partida añado dicha partida a la lista de la sesión
-        if ($partida->esFin()) {
-            if (isset($_SESSION['partidas'])) {
+            // Si es el fin de la partida añado dicha partida a la lista de la sesión
+            if ($partida->esFin()) {
                 $_SESSION['partidas'][] = $partida;
-            } else {
-                $_SESSION['partidas'] = [$partida];
             }
         }
         // Sigo jugando
