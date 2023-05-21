@@ -97,10 +97,7 @@ if (isset($_SESSION['usuario'])) {
         die;
     } elseif (isset($_REQUEST['botonperfil'])) {
         $usuario = $_SESSION['usuario'];
-        $nombre = $usuario->getNombre();
-        $clave = $usuario->getClave();
-        $email = $usuario->getEmail();
-        echo $blade->run("formperfil", compact('nombre', 'clave', 'email'));
+        echo $blade->run("formperfil", compact('usuario'));
         die;
     } elseif (isset($_REQUEST['botonprocperfil'])) {
         $usuario = $_SESSION['usuario'];

@@ -3,7 +3,7 @@
 {{-- Sección aporta el título de la página --}}
 @section('title', 'Formulario login')
 {{-- Sección sobreescribe el barra de navegación de la plantilla app --}}
-@section('navbar')
+@section('usermenu')
 @endsection
 {{-- Sección muestra el formulario de login del usuario --}}
 @section('content')
