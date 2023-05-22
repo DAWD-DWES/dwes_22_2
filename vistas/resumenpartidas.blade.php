@@ -10,7 +10,7 @@
 {{-- Sección muestra vista de juego para que el usuario elija una letra --}}
 @section('content')
 <div class="container">
-    <h1 class="my-5 text-center">Resumen de partidas jugadas</h1>
+    <h2 class="my-5 text-center">Resumen de partidas jugadas</h2>
     <div class="row">
         <div class="col-6">
             <table class="table">
