@@ -22,18 +22,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if(!empty($partidasGanadas))
                     @php $i=1; @endphp
-                    @foreach($partidasGanadas as $key => $partidaGanada)
+                    @forelse($partidasGanadas as $key => $partidaGanada)
                     <tr>
                         <th scope="row">{{ $i++ }}</th>
                         <td>{{ $key }}</td>
                         <td>{{ $partidaGanada }}</td>
                     </tr>
-                    @endforeach
-                    @else
+                    @empty
                     <tr><td>No hay palabras</td></tr>
-                    @endif
+                    @endforelse
                 </tbody>
             </table>
         </div>
@@ -46,17 +44,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if(!empty($partidasPerdidas))
                     @php $i=1; @endphp
-                    @foreach($partidasPerdidas as $key => $partidaPerdida)
+                    @forelse($partidasPerdidas as $key => $partidaPerdida)
                     <tr>
                         <th scope="row">{{ $i++ }}</th>
                         <td>{{ $partidaPerdida }}</td>
                     </tr>
-                    @endforeach
-                    @else
+                    @empty
                     <tr><td>No hay palabras</td></tr>
-                    @endif
+                    @endforelse
                 </tbody>
             </table>
         </div>
