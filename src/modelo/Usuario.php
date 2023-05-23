@@ -8,6 +8,11 @@ namespace App\Modelo;
 class Usuario {
 
     /**
+     * @var string $id identificador del usuario
+     */
+    private string $id;
+
+    /**
      * @var string $nombre nombre del usuario
      */
     private string $nombre;
@@ -113,4 +118,3 @@ class Usuario {
     }
 
 }
-
