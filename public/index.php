@@ -97,13 +97,13 @@ if (isset($_SESSION['usuario'])) {
         die;
     } elseif (isset($_REQUEST['botonperfil'])) {
         $usuario = $_SESSION['usuario'];
-        echo $blade->run("formperfil", compact('usuario'));
+        echo $blade->run("formperfil", ['nombre' => $usuario->getNombre(), 'clave' => $usuario->getClave(), 'email' => $usuario->getEmail()]);
         die;
     } elseif (isset($_REQUEST['botonprocperfil'])) {
         $usuario = $_SESSION['usuario'];
-        $nombre = trim(filter_input(INPUT_POST, 'nombre', FILTER_SANITIZE_STRING));
-        $clave = trim(filter_input(INPUT_POST, 'clave', FILTER_SANITIZE_STRING));
-        $email = trim(filter_input(INPUT_POST, 'email', FILTER_SANITIZE_STRING));
+        $nombre = trim(filter_input(INPUT_POST, 'nombre', FILTER_UNSAFE_RAW));
+        $clave = trim(filter_input(INPUT_POST, 'clave', FILTER_UNSAFE_RAW));
+        $email = trim(filter_input(INPUT_POST, 'email', FILTER_UNSAFE_RAW));
         $errorNombre = empty($nombre) || !esNombreValido($nombre);
         $errorPassword = empty($clave) || !esPasswordValido($clave);
         $errorEmail = empty($email) || !esEmailValido($email);

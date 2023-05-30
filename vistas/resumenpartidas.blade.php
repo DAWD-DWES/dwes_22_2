@@ -22,12 +22,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @php $i=1; @endphp
-                    @forelse($partidasGanadas as $key => $partidaGanada)
+                    @set $i=1
+                    @forelse($partidasGanadas as $palabraOculta=> $numErrores)
                     <tr>
                         <th scope="row">{{ $i++ }}</th>
-                        <td>{{ $key }}</td>
-                        <td>{{ $partidaGanada }}</td>
+                        <td>{{ $palabraOculta }}</td>
+                        <td>{{ $numErrores }}</td>
                     </tr>
                     @empty
                     <tr><td>No hay palabras</td></tr>
@@ -44,8 +44,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @php $i=1; @endphp
-                    @forelse($partidasPerdidas as $key => $partidaPerdida)
+                    @set $i=1
+                    @forelse($partidasPerdidas as $partidaPerdida)
                     <tr>
                         <th scope="row">{{ $i++ }}</th>
                         <td>{{ $partidaPerdida }}</td>
