@@ -17,7 +17,7 @@
                 @section('usermenu')
                 <div class="nav-item dropdown">
                     <button class="nav-link dropdown-toggle btn btn-light ms-5" href="#" id="navbarDropdownMenuLink" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        {{ $usuario->getNombre() }}
+                        {{ (isset($usuario)) ? $usuario->getNombre() : "" }}
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <li><a class="dropdown-item" href="index.php?botonperfil">Perfil</a></li>

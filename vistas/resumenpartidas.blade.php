@@ -22,7 +22,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @set $i=1
+                    @php $i=1;
+                    @endphp
                     @forelse($partidasGanadas as $palabraOculta=> $numErrores)
                     <tr>
                         <th scope="row">{{ $i++ }}</th>
@@ -44,7 +45,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @set $i=1
+                    @php $i=1;
+                    @endphp
                     @forelse($partidasPerdidas as $partidaPerdida)
                     <tr>
                         <th scope="row">{{ $i++ }}</th>
